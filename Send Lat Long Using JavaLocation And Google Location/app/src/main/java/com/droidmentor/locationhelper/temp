@@ -1,0 +1,109 @@
+//                    ha.postDelayed(new Runnable() {
+    //
+    //                        @Override
+    //                        public void run() {
+    //                            runnable = this;
+    //                            //call function
+    //                            ha.postDelayed(this, 1000);
+    //                            getLocation();
+    //
+    //                            if (mLastLocation != null) {
+    //                                latitude = mLastLocation.getLatitude();
+    //                                longitude = mLastLocation.getLongitude();
+    //                                myLatLongArrayList.add(new MyLatLong(location.getLatitude(), location.getLongitude()));
+    //                                //** getAddress();
+    //                                Log.e("Lat==>", "" + latitude);
+    //                                Log.e("Long==>", "" + longitude);
+    //                                StringBuilder builder = new StringBuilder();
+    //                                for (MyLatLong details : myLatLongArrayList) {
+    //                                    builder.append(details.getLat() + "," + details.getLon() + "\n");
+    //                                }
+    ////                                for (int i = 0; i <10 ; i++) {
+    ////
+    ////                                    builder.append("this>"+i);
+    ////                                }
+    //
+    //                                tvAddress.setText(builder.toString());
+    //                            } else {
+    //
+    //                                if (btnProceed.isEnabled())
+    //                                    btnProceed.setEnabled(false);
+    //
+    //                                showToast("Couldn't get the location. Make sure location is enabled on the device");
+    //                            }
+    //
+    //
+    //                        }
+    //
+    //                    }, 1000);
+
+
+
+
+//using fro loop
+
+    //                    lastLocation = new MyLatLong(23.017427, 72.529772);
+    //                    float[] results = new float[1];
+    //                    Location.distanceBetween(
+    //                            myLatLongArrayList.get(0).getLat(),
+    //                            myLatLongArrayList.get(0).getLon(),
+    //                            23.1116,
+    //                            72.5728,
+    //                            results);
+    //                    for (int i = 0; i < myLatLongArrayList.size(); i++) {
+    //
+    //                        tvDistance.setText(
+    //                                getDistance(
+    //                                myLatLongArrayList.get(0).getLat(),
+    //                                myLatLongArrayList.get(0).getLon(),
+    //                                myLatLongArrayList.get(i).getLat(),
+    //                                myLatLongArrayList.get(i).getLon()
+    //                                )
+    //                        );
+    //
+    //                    }
+    //                    Toast.makeText(MyLocationUsingLocationAPI.this, "" + latitude+ "," +longitude,Toast.LENGTH_SHORT).show();
+    // Toast.makeText(MyLocationUsingLocationAPI.this, "Getting lat-long...", Toast.LENGTH_SHORT).show();
+
+
+
+
+//////////30-1-2017
+
+
+    try {
+    if (flag) {
+    firstLat = location.getLatitude();
+    firstLng = location.getLongitude();
+    flag = false;
+    } else {
+    lastLat = location.getLatitude();
+    lastLng = location.getLongitude();
+
+    //using location
+    float result[] = new float[1];
+    Location.distanceBetween(firstLat, firstLng, lastLat, lastLng, result);
+    // Toast.makeText(MyLocationUsingLocationAPI.this, "distanceBetween : " + result[0], Toast.LENGTH_SHORT).show();
+    Log.e("distanceBetween : ", String.valueOf(result[0]));
+    float distance = result[0] / 1000;
+    totalDistance = totalDistance + distance;
+    Log.e("distance : ", " " + totalDistance);
+    // tvDistance.setText("" + totalDistance);
+
+    //google api
+    String strKm = getDistance((float) firstLat, (float) firstLng, (float) lastLat, (float) lastLng);
+    String[] arrKm = strKm.split(" ");
+    float km = Float.parseFloat(arrKm[0].trim());
+    totalDistanceGoogle = totalDistanceGoogle + km;
+
+    tvDistance.setText("From Location=>" + totalDistance + "\n" + "From Google=>" + totalDistanceGoogle + "km");
+    firstLat = lastLat;
+    firstLng = lastLng;
+
+    }
+
+
+    } catch (Exception e) {
+    Log.e("Catch=>", e.getMessage());
+    e.printStackTrace();
+    }
